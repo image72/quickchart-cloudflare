@@ -50,17 +50,25 @@ async function testWorker() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chart: testChart, w: 500, h: 300 }),
     });
-
     const elapsed = Date.now() - start;
+    const buffer = await response.arrayBuffer();
+
+    if (response.ok) {
+      const fs = require('fs');
+      fs.writeFileSync('/tmp/chart-2.png', Buffer.from(buffer));
+      console.log(`✅ Saved to /tmp/chart-2.png`);
+    }
+
     console.log(`   Status: ${response.status}`);
     console.log(`   Time: ${elapsed}ms`);
     console.log(
       `   Browser Reused: ${response.headers.get('X-Browser-Reused')}`
     );
+    console.log(`   Image Size: ${(buffer.byteLength / 1024).toFixed(1)}KB`);
     console.log(
-      `   Image Size: ${(response.headers.get('content-length') / 1024).toFixed(
-        1
-      )}KB\n`
+      `   Server-Timing: ${
+        response.headers.get('Server-Timing') || 'Not present'
+      }\n`
     );
     console.log(`   Headers:`, response.headers);
   } catch (error) {
@@ -79,15 +87,24 @@ async function testWorker() {
     );
 
     const elapsed = Date.now() - start;
+    const buffer = await response.arrayBuffer();
+
+    if (response.ok) {
+      const fs = require('fs');
+      fs.writeFileSync('/tmp/chart-3.png', Buffer.from(buffer));
+      console.log(`✅ Saved to /tmp/chart-3.png`);
+    }
+
     console.log(`   Status: ${response.status}`);
     console.log(`   Time: ${elapsed}ms`);
     console.log(
       `   Browser Reused: ${response.headers.get('X-Browser-Reused')}`
     );
+    console.log(`   Image Size: ${(buffer.byteLength / 1024).toFixed(1)}KB`);
     console.log(
-      `   Image Size: ${(response.headers.get('content-length') / 1024).toFixed(
-        1
-      )}KB\n`
+      `   Server-Timing: ${
+        response.headers.get('Server-Timing') || 'Not present'
+      }\n`
     );
     console.log(`   Headers:`, response.headers);
   } catch (error) {
@@ -108,15 +125,24 @@ async function testWorker() {
     );
 
     const elapsed = Date.now() - start;
+    const buffer = await response.arrayBuffer();
+
+    if (response.ok) {
+      const fs = require('fs');
+      fs.writeFileSync('/tmp/chart-4.png', Buffer.from(buffer));
+      console.log(`✅ Saved to /tmp/chart-4.png`);
+    }
+
     console.log(`   Status: ${response.status}`);
     console.log(`   Time: ${elapsed}ms`);
     console.log(
       `   Browser Reused: ${response.headers.get('X-Browser-Reused')}`
     );
+    console.log(`   Image Size: ${(buffer.byteLength / 1024).toFixed(1)}KB`);
     console.log(
-      `   Image Size: ${(response.headers.get('content-length') / 1024).toFixed(
-        1
-      )}KB\n`
+      `   Server-Timing: ${
+        response.headers.get('Server-Timing') || 'Not present'
+      }\n`
     );
   } catch (error) {
     console.log(`❌ Error: ${error.message}\n`);

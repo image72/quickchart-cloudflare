@@ -122,12 +122,14 @@ export class BrowserSession {
       return new Response(screenshot, {
         headers: {
           'Content-Type': 'image/png',
+          /*
           'X-Browser-Reused': this.requestCount > 1 ? 'true' : 'false',
           'X-Request-Count': this.requestCount.toString(),
           'X-Init-Time': timings.initialization.toString(),
           'X-Update-Time': timings.chartUpdate.toString(),
           'X-Screenshot-Time': timings.screenshot.toString(),
           'X-Total-Time': timings.total.toString(),
+          */
         },
       });
     } catch (error) {
@@ -429,7 +431,6 @@ export default {
         // Add timing headers
         const totalTime = Date.now() - startTime;
         const headers = new Headers(response.headers);
-        headers.set('X-Worker-Time', totalTime.toString());
         headers.set('X-Request-ID', metrics.requestId);
 
         // Add Server-Timing header for browser DevTools (only when DEBUG=1)

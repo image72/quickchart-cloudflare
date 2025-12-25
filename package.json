@@ -4,7 +4,8 @@
   "description": "QuickChart on Cloudflare Workers with Browser Rendering",
   "main": "index.js",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --remote",
+    "dev:local": "wrangler dev --test-scheduled",
     "deploy": "wrangler deploy",
     "test": "node test.js"
   },
@@ -19,7 +20,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@cloudflare/puppeteer": "^0.0.10",
-    "wrangler": "^3.0.0"
+    "@cloudflare/puppeteer": "^1.0.4",
+    "wrangler": "^4.54.0"
   }
 }

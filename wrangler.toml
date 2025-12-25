@@ -16,3 +16,6 @@ class_name = "BrowserSession"
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["BrowserSession"]
+
+[vars]
+DEBUG = "1"
