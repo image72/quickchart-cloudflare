@@ -92,10 +92,16 @@ export class BrowserSession {
         const initStart = Date.now();
         await this.initializeBrowser();
         timings.initialization = Date.now() - initStart;
-        console.log(`[BROWSER] Initialized new session: ${timings.initialization}ms`);
+        console.log(
+          `[BROWSER] Initialized new session: ${timings.initialization}ms`
+        );
       } else {
         timings.initialization = 0;
-        console.log(`[BROWSER] Reusing existing session (request #${this.requestCount + 1})`);
+        console.log(
+          `[BROWSER] Reusing existing session (request #${
+            this.requestCount + 1
+          })`
+        );
       }
 
       this.requestCount++;
@@ -150,7 +156,7 @@ export class BrowserSession {
 
     // Enable request interception to block unnecessary resources
     await this.page.setRequestInterception(true);
-    this.page.on('request', request => {
+    this.page.on('request', (request) => {
       const resourceType = request.resourceType();
       if (['image', 'stylesheet', 'font', 'media'].includes(resourceType)) {
         request.abort();
@@ -173,7 +179,7 @@ export class BrowserSession {
     });
 
     // Update chart using the loaded Chart.js instance
-    const success = await this.page.evaluate(config => {
+    const success = await this.page.evaluate((config) => {
       return window.updateChart(config);
     }, chartConfig);
 
@@ -182,7 +188,9 @@ export class BrowserSession {
     }
 
     // Wait for chart render completion instead of arbitrary timeout
-    await this.page.waitForFunction(() => window.chartReady === true, { timeout: 5000 });
+    await this.page.waitForFunction(() => window.chartReady === true, {
+      timeout: 5000,
+    });
   }
 
   async takeScreenshot() {
@@ -359,12 +367,15 @@ export default {
     try {
       // Health check
       if (url.pathname === '/' || url.pathname === '/health') {
-        return new Response('QuickChart Worker (Optimized with Browser Reuse)', {
-          headers: {
-            'Content-Type': 'text/plain',
-            'X-Request-ID': metrics.requestId,
-          },
-        });
+        return new Response(
+          'QuickChart Worker (Optimized with Browser Reuse)',
+          {
+            headers: {
+              'Content-Type': 'text/plain',
+              'X-Request-ID': metrics.requestId,
+            },
+          }
+        );
       }
 
       // Chart rendering
@@ -374,11 +385,13 @@ export default {
 
         if (!chart) {
           return new Response(
-            JSON.stringify({ error: 'Missing chart configuration (use c or chart parameter)' }),
+            JSON.stringify({
+              error: 'Missing chart configuration (use c or chart parameter)',
+            }),
             {
               status: 400,
               headers: { 'Content-Type': 'application/json' },
-            },
+            }
           );
         }
 
@@ -396,7 +409,7 @@ export default {
             {
               status: 400,
               headers: { 'Content-Type': 'application/json' },
-            },
+            }
           );
         }
 
@@ -419,22 +432,25 @@ export default {
         headers.set('X-Worker-Time', totalTime.toString());
         headers.set('X-Request-ID', metrics.requestId);
 
-        // Add Server-Timing header for browser DevTools
-        const initTime = headers.get('X-Init-Time') || '0';
-        const updateTime = headers.get('X-Update-Time') || '0';
-        const screenshotTime = headers.get('X-Screenshot-Time') || '0';
-        const renderTime = headers.get('X-Total-Time') || '0';
+        // Add Server-Timing header for browser DevTools (only when DEBUG=1)
+        const isDebug = env.DEBUG === '1' || env.DEBUG === 1;
+        if (isDebug) {
+          const initTime = headers.get('X-Init-Time') || '0';
+          const updateTime = headers.get('X-Update-Time') || '0';
+          const screenshotTime = headers.get('X-Screenshot-Time') || '0';
+          const renderTime = headers.get('X-Total-Time') || '0';
 
-        headers.set(
-          'Server-Timing',
-          [
-            `browser;dur=${initTime};desc="Browser Init"`,
-            `update;dur=${updateTime};desc="Chart Update"`,
-            `screenshot;dur=${screenshotTime};desc="Screenshot"`,
-            `render;dur=${renderTime};desc="Total Render"`,
-            `worker;dur=${totalTime};desc="Worker Total"`,
-          ].join(', '),
-        );
+          headers.set(
+            'Server-Timing',
+            [
+              `browser;dur=${initTime};desc="Browser Init"`,
+              `update;dur=${updateTime};desc="Chart Update"`,
+              `screenshot;dur=${screenshotTime};desc="Screenshot"`,
+              `render;dur=${renderTime};desc="Total Render"`,
+              `worker;dur=${totalTime};desc="Worker Total"`,
+            ].join(', ')
+          );
+        }
 
         // Log performance
         const browserReused = headers.get('X-Browser-Reused') === 'true';
@@ -445,7 +461,7 @@ export default {
           `[PERF] Request #${requestCount} | ` +
             `Reused: ${browserReused} | ` +
             `Render: ${totalRenderTime}ms | ` +
-            `Total: ${totalTime}ms`,
+            `Total: ${totalTime}ms`
         );
 
         return new Response(response.body, {
@@ -468,7 +484,7 @@ export default {
         {
           status: 500,
           headers: { 'Content-Type': 'application/json' },
-        },
+        }
       );
     }
   },

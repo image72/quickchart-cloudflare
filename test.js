@@ -62,6 +62,7 @@ async function testWorker() {
         1
       )}KB\n`
     );
+    console.log(`   Headers:`, response.headers);
   } catch (error) {
     console.log(`❌ Error: ${error.message}\n`);
   }
@@ -88,6 +89,7 @@ async function testWorker() {
         1
       )}KB\n`
     );
+    console.log(`   Headers:`, response.headers);
   } catch (error) {
     console.log(`❌ Error: ${error.message}\n`);
   }
