@@ -1,0 +1,18 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "quickchart-cloudflare"
+main = "index.js"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Browser Rendering binding
+browser = { binding = "BROWSER" }
+
+# Durable Object for browser session reuse
+[[durable_objects.bindings]]
+name = "BROWSER_SESSION"
+class_name = "BrowserSession"
+
+# Durable Object migration
+[[migrations]]
+tag = "v1"
+new_classes = ["BrowserSession"]
