@@ -1,5 +1,7 @@
 # QuickChart Cloudflare Worker
 
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/image72/quickchart-cloudflare)
+
 A high-performance Chart.js rendering service running on Cloudflare Workers with Browser Rendering.
 
 ## Features
